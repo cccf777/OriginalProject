@@ -49,7 +49,8 @@ public class ContentListController extends HttpServlet {
 		
 		if(query_!=null && !query_.equals(""))
 			query = query_;
-		
+		System.out.println("query_: "+query_);
+		System.out.println("query: "+query);
 		//int count = ContentDAO.getInstance().getCount(field, query,userRank);
 		//System.out.println("controller :"+count);
 		

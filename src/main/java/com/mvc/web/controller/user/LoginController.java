@@ -64,6 +64,19 @@ public class LoginController extends HttpServlet{
 			session.setAttribute("userRank",userRank);
 			session.setAttribute("userEmail",userEmail);
 			
+			
+			//틓하리렁츠 ip추출
+			String userIP = req.getHeader("X-Forwarded-For");
+			if(userIP==null) 
+				userIP = req.getRemoteAddr();
+			
+			//접속한 인원 테이블에 접속자 정보 입력
+			UserDAO.getInstance().setLoginInfo(userID,userIP);
+			
+			
+			
+			
+			
 			if(premember!=null) {
 				setCookie("sid",pid,resp);
 			}else{

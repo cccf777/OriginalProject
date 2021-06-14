@@ -18,14 +18,17 @@ public class ModifyUserGrade extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		session.removeAttribute("userRank");
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html; charset=UTF-8");
 		String userID = (req.getSession().getAttribute("userID")).toString();
-		HttpSession session = req.getSession();
+		
 		
 		String [] check = req.getParameterValues("mrank");
 		String grade_ = check[0];
 		
+		session.setAttribute("userRank",grade_);
 		/*
 		 * for(int i=0; i<check.length; i++){ System.out.println("체크값은?!!!!"+check[i]);
 		 * }
@@ -36,8 +39,9 @@ public class ModifyUserGrade extends HttpServlet {
 		 * req.setAttribute("userR",G); break; case "U": req.setAttribute("userR",U);
 		 * break; }
 		 */
-		ContentDAO cd = new ContentDAO(); 
-		cd.usergrade(userID,grade_);
+		
+		//ContentDAO cd = new ContentDAO(); 
+		//cd.usergrade(userID,grade_);
 		
 		
 		   //req.getRequestDispatcher("../content/list").forward(req, resp);

@@ -46,7 +46,9 @@ public class ContentDAO {
 		int start = 1+ (page-1)*10;
 		int end = page*10;
 		
-		String sql = "	select * ,  (select count(id) as count "
+		
+		
+		String sql1 = "	select * ,  (select count(id) as count "
 		  		+ "	              from tbl_board "
 			    + "	           	where "+field+" like ? "
 				+ "	           	  and useFlag ='Y' "
@@ -63,23 +65,57 @@ public class ContentDAO {
 				+ "									   where rankcd=? ) "
 				+ "	      			order by regdate desc)n, "
 				+ "		  (SELECT @rownum:=0)low) num "
-				+ "  where num.num between ? and ? "; // 조회 sql
+				+ "  where num.num between ? and ? ";
+		
+		String sql2 = "select * ,  (select count(id) as count "
+				+ "			from tbl_board "
+				+ "					where (LEVENSHTEIN(writeID,?)<=2) "
+				+ "						and useFlag ='Y' "
+				+ "						and boardid in (select boardID "
+				+ "										from user_auth "
+				+ "										where rankcd= ?)) as count "
+				+ "					  from (select @rownum:=@rownum+1 as num ,n.* "
+				+ "					          from( select * "
+				+ "						                 from tbl_board "
+				+ "									    where (LEVENSHTEIN(writeID,?)<=2) "
+				+ "										  and useFlag ='Y' "
+				+ "					                   and boardid in (select boardID "
+				+ "														    from user_auth "
+				+ "														   where rankcd=? ) "
+				+ "						      			order by regdate desc)n, "
+				+ "							  (SELECT @rownum:=0)low) num "
+				+ "					  where num.num between ? and ? "; // 조회 sql
 		List<Notice> list = new ArrayList<>(); // list 배열 생성
+		
+		
 
 		try {
-			con = ConnectionProvider.getConnection(); // 필드 값으로 driver 명칭 선언
-			psmt = con.prepareStatement(sql);
+			con = ConnectionProvider.getConnection();//검색조건이 title일 경우
+			if(field.equals("title")) {
+				psmt = con.prepareStatement(sql1);
+				psmt.setString(1,"%"+query+"%");
+				psmt.setString(2, rank);
+				psmt.setString(3,"%"+query+"%");
+				psmt.setString(4, rank);
+				psmt.setInt(5, start);
+				psmt.setInt(6, end);
+			}else if(field.equals("writeid")){//검색조건이 writeid일 경우
+				psmt = con.prepareStatement(sql2);
+				psmt.setString(1,query);
+				psmt.setString(2, rank);
+				psmt.setString(3,query);
+				psmt.setString(4, rank);
+				psmt.setInt(5, start);
+				psmt.setInt(6, end);
+			}
+			 // 필드 값으로 driver 명칭 선언
 			
-			psmt.setString(1,"%"+query+"%");
-			psmt.setString(2, rank);
-			psmt.setString(3,"%"+query+"%");
-			psmt.setString(4, rank);
-			psmt.setInt(5, start);
-			psmt.setInt(6, end);
 			
 			System.out.println(psmt);
 			rs = psmt.executeQuery();
 
+			
+			
 			while (rs.next()) {
 				int id1 = rs.getInt("id");
 				String boardid = rs.getString("boardid");
@@ -331,5 +367,11 @@ public class ContentDAO {
 			
 		}
 		
+	}
+
+
+	public List<Notice> getContentAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

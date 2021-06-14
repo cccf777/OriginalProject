@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.mvc.web.connection.ConnectionProvider;
-
+import com.mvc.web.connection.jdbcUtil;
 import com.mvc.web.entity.content.Notice;
 import com.mvc.web.entity.user.Login;
 import com.mvc.web.entity.user.Register;
@@ -126,5 +126,33 @@ public class UserDAO {
 		}
 
 		return result;
+	}
+
+	public void setLoginInfo(String userID, String userIP) {
+		Connection con = null;
+		PreparedStatement psmt = null;
+
+		int result = 0;
+		String sql = "insert into user_swap(userID,userIP,outTime,division) "
+					+" values (?,?,?,?)";
+
+		try {
+
+			con = ConnectionProvider.getConnection();
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, userID);
+			psmt.setString(2, userIP);
+			psmt.setString(3, null);
+			psmt.setString(4,"I");
+			//System.out.println("psmt aaaaaa:" + psmt);
+			result = psmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			jdbcUtil.close(con);
+			jdbcUtil.close(psmt);
+			
+		}
 	}
 }
