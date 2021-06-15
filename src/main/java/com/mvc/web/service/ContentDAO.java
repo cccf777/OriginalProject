@@ -43,70 +43,63 @@ public class ContentDAO {
 		ResultSet rs = null;
 		int count = 0;
 		
-		int start = 1+ (page-1)*10;
-		int end = page*10;
+		int start = (page-1)*10;
+
 		
+		String sql1="		   select row.* , cnt.count"
+				+ "			   from(select * "
+				+ "					from tbl_board "
+				+ "                 where (levenshtein(writeID, ?) <= 2)"
+				+ "					and useFlag ='Y' "
+				+ "					and boardid in (select boardID "
+				+ "									from user_auth "
+				+ "									where rankcd= ?) "
+				+ "					order by regdate desc  limit 10 offset ?)row,"
+				+ "					(select count(id) as count"
+				+ "					 from tbl_board "
+				+ "					 where (levenshtein(writeID, ?) <= 2)"
+				+ "					 and useFlag ='Y' "
+				+ "					 and boardid in (select boardID "
+				+ "									 from user_auth "
+				+ "									 where rankcd= ?))cnt";
 		
-		
-		String sql1 = "	select * ,  (select count(id) as count "
-		  		+ "	              from tbl_board "
-			    + "	           	where "+field+" like ? "
-				+ "	           	  and useFlag ='Y' "
-				+ "	           	  and boardid in (select boardID "
-				+ "	             				    from user_auth "
-				+ "	             			       where rankcd= ?)) as count "
-				+ "  from (select @rownum:=@rownum+1 as num ,n.* "
-				+ "          from( select * "
-				+ "	                 from tbl_board "
-				+ "				    where "+field+" like ? "
+		String sql2 =  "	    select row.* , cnt.count as count"
+				+ "				from(select * "
+				+ "					 from tbl_board "
+				+ "					 where title like ? "
+				+ "					 and useFlag ='Y' "
+				+ "					 and boardid in (select boardID "
+				+ "									 from user_auth "
+				+ "									 where rankcd=? ) "
+				+ "					 order by regdate desc  limit 10 offset ?)row,"
+				+ "					 (select count(id) as count "
+				+ "					  from tbl_board "
+				+ "					  where title like ? "
 				+ "					  and useFlag ='Y' "
-				+ "                   and boardid in (select boardID "
-				+ "									    from user_auth "
-				+ "									   where rankcd=? ) "
-				+ "	      			order by regdate desc)n, "
-				+ "		  (SELECT @rownum:=0)low) num "
-				+ "  where num.num between ? and ? ";
+				+ "					  and boardid in (select boardID "
+				+ "									  from user_auth "
+				+ "									  where rankcd=? ))cnt "; // 조회 sql
 		
-		String sql2 = "select * ,  (select count(id) as count "
-				+ "			from tbl_board "
-				+ "					where (LEVENSHTEIN(writeID,?)<=2) "
-				+ "						and useFlag ='Y' "
-				+ "						and boardid in (select boardID "
-				+ "										from user_auth "
-				+ "										where rankcd= ?)) as count "
-				+ "					  from (select @rownum:=@rownum+1 as num ,n.* "
-				+ "					          from( select * "
-				+ "						                 from tbl_board "
-				+ "									    where (LEVENSHTEIN(writeID,?)<=2) "
-				+ "										  and useFlag ='Y' "
-				+ "					                   and boardid in (select boardID "
-				+ "														    from user_auth "
-				+ "														   where rankcd=? ) "
-				+ "						      			order by regdate desc)n, "
-				+ "							  (SELECT @rownum:=0)low) num "
-				+ "					  where num.num between ? and ? "; // 조회 sql
 		List<Notice> list = new ArrayList<>(); // list 배열 생성
 		
-		
-
 		try {
-			con = ConnectionProvider.getConnection();//검색조건이 title일 경우
+			 con = ConnectionProvider.getConnection();
+			 //검색조건이 title 일 경우
 			if(field.equals("title")) {
-				psmt = con.prepareStatement(sql1);
-				psmt.setString(1,"%"+query+"%");
+			    psmt = con.prepareStatement(sql2);
+				psmt.setString(1, "%"+query+"%");
 				psmt.setString(2, rank);
-				psmt.setString(3,"%"+query+"%");
-				psmt.setString(4, rank);
-				psmt.setInt(5, start);
-				psmt.setInt(6, end);
-			}else if(field.equals("writeid")){//검색조건이 writeid일 경우
-				psmt = con.prepareStatement(sql2);
-				psmt.setString(1,query);
+				psmt.setString(4, "%"+query+"%");
+				psmt.setString(5, rank);
+				psmt.setInt(3, start);
+			//검색조건이 writeid 일 경우
+			}else if(field.equals("writeid")){
+			    psmt = con.prepareStatement(sql1);
+				psmt.setString(1, query);
 				psmt.setString(2, rank);
-				psmt.setString(3,query);
-				psmt.setString(4, rank);
-				psmt.setInt(5, start);
-				psmt.setInt(6, end);
+				psmt.setString(4, query);
+				psmt.setString(5, rank);
+				psmt.setInt(3, start);
 			}
 			 // 필드 값으로 driver 명칭 선언
 			
@@ -373,5 +366,85 @@ public class ContentDAO {
 	public List<Notice> getContentAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	public Etclist getAllContent(int page, String query, String rank) {
+		Connection con = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		
+		int start = (page-1)*10;
+
+		
+		String sql="select row.*, cnt.count"
+				+ "	from(select *"
+				+ "		   from tbl_board"
+				+ "	      where useFlag ='Y' "
+				+ "            and match(title, writeid, content)  against(? in boolean mode)"
+				+ "		    and boardid in (select boardID "
+				+ "							 from user_auth "
+				+ "							where rankcd= ?) "
+				+ "		 order by regdate desc  limit 10 offset ?)row,"
+				+ "         (select count(id) as count"
+				+ "		    from tbl_board"
+				+ "	       where useFlag ='Y' "
+				+ "             and match(title, writeid, content)  against(? in boolean mode)"
+				+ "		     and boardid in (select boardID "
+				+ "                            from user_auth "
+				+ "						      where rankcd= ?))cnt"; // 조회 sql
+		
+		List<Notice> list = new ArrayList<>(); // list 배열 생성
+		
+		try {
+			 con = ConnectionProvider.getConnection();			
+			 psmt = con.prepareStatement(sql);
+			 psmt.setString(1, query);
+			 psmt.setString(2, rank);
+			 psmt.setString(4, query);
+			 psmt.setString(5, rank);
+			 psmt.setInt(3, start);
+			
+			
+			 // 필드 값으로 driver 명칭 선언
+			
+			
+			System.out.println(psmt);
+			rs = psmt.executeQuery();
+
+			
+			
+			while (rs.next()) {
+				int id1 = rs.getInt("id");
+				String boardid = rs.getString("boardid");
+				String title = rs.getString("title");
+				String writeid = rs.getString("writeid");
+				String content = rs.getString("content");
+				Date regdate = rs.getTimestamp("regdate");
+				int hit = rs.getInt("hit");
+				count = rs.getInt("count");
+				
+				
+				
+				//조회 된 값을 입력하여 초기화하는 생성자 생성
+				Notice ns = new Notice(id1, title, writeid, content, regdate, hit);
+				list.add(ns);
+				//list 에 조회된 값이 저장된 notice 객체 추가
+							
+			}
+			con.close();
+			psmt.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			jdbcUtil.close(con);
+			jdbcUtil.close(psmt);
+			jdbcUtil.close(rs);
+		}
+		
+		Etclist el = new Etclist(count,list);
+		return el;
 	}	
 }

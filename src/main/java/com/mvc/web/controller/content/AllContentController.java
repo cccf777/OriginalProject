@@ -1,7 +1,6 @@
 package com.mvc.web.controller.content;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,11 +13,10 @@ import com.mvc.web.entity.content.Etclist;
 import com.mvc.web.entity.content.Notice;
 import com.mvc.web.service.ContentDAO;
 
+@WebServlet("/board/content/allcontent")
+public class AllContentController extends HttpServlet {
 
-@WebServlet("/board/content/list")
-public class ContentListController extends HttpServlet {
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String userNM=req.getSession().getAttribute("userNM").toString();
 		String userID=req.getSession().getAttribute("userID").toString();
@@ -31,28 +29,29 @@ public class ContentListController extends HttpServlet {
 		
 		ContentDAO nd = new ContentDAO();
 		String page_ = req.getParameter("p");	//page
-		String field_=req.getParameter("f");
+		
 		String query_=req.getParameter("q");	//검색어
-		String field="title";
+		
 		String query = "";						//검색어 초기값
 		int page=1;
 		
 		//System.out.println("query_: "+query_);
 		//List<Notice>list = new ArrayList<>();
+		
+		
 		if(page_!=null && !page_.equals(""))
 			page = Integer.parseInt(page_);
 		
-		if(field_!=null && !field_.equals(""))
-			field = field_;
 		
 		if(query_!=null && !query_.equals(""))
 			query = query_;
 		System.out.println("query_: "+query_);
 		System.out.println("query: "+query);
 		//int count = ContentDAO.getInstance().getCount(field, query,userRank);
-		//System.out.println("controller :"+count);		
+		//System.out.println("controller :"+count);
 		
-		Etclist el = ContentDAO.getInstance().getList(page,field,query,userRank);
+		
+		Etclist el = ContentDAO.getInstance().getAllContent(page,query,userRank);
 		
 		int count = el.getCount();
 		
@@ -63,11 +62,6 @@ public class ContentListController extends HttpServlet {
 		req.setAttribute("list", list);
 		//String str = req.getParameter("cnt");
 		
-		req.getRequestDispatcher("/WEB-INF/board/content/ContentList.jsp").forward(req, resp);
-	}
-	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+		req.getRequestDispatcher("/WEB-INF/board/content/AllContentList.jsp").forward(req, resp);
 	}
 }

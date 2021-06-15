@@ -29,27 +29,29 @@
 	      <div class="position-sticky pt-3">
 	        <ul class="nav flex-column">
 	          <li class="nav-item">
-	            <a class="nav-link active" aria-current="page" href="#">
+	            <a class="nav-link active" aria-current="page" href="/board/content/notice?rank=&bgid=1">
+
+	            
 	              <span data-feather="home"></span>
-	              Dashboard
+	              공지사항
 	            </a>
 	          </li>
 	          <li class="nav-item">
-	            <a class="nav-link" href="#">
+	            <a class="nav-link" href="/board/content/humor?rank=&bgid=2">
 	              <span data-feather="file"></span>
-	              Orders
+	              유머게시판
 	            </a>
 	          </li>
 	          <li class="nav-item">
-	            <a class="nav-link" href="#">
+	            <a class="nav-link" href="/board/content/soccer?rank=&bgid=3">
 	              <span data-feather="shopping-cart"></span>
-	              Products
+	              축구게시판
 	            </a>
 	          </li>
 	          <li class="nav-item">
-	            <a class="nav-link" href="#">
+	            <a class="nav-link" href="/board/content/movie?rank=&bgid=4">
 	              <span data-feather="users"></span>
-	              Customers
+	              영화게시판
 	            </a>
 	          </li>
 	          <li class="nav-item">

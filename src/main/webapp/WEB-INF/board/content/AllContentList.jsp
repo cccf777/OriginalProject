@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Content List</title>
+<title>All Content List</title>
 	<!-- root Route -->
 	<c:set var="root" value="${pageContext.request.contextPath}" />
     <!-- Bootstrap core CSS -->
@@ -85,7 +85,7 @@
 					<!-- 이전 페이지 -->
 					<li class="page-item">
 						<c:if test="${startNum > 1 }">
-							<a class="page-link" href="?p=${startNum-1}&f=${param.f}&q=${param.q}">Prev</a>
+							<a class="page-link" href="?p=${startNum-1}&q=${param.q}">Prev</a>
 						</c:if>
 						<c:if test="${startNum <= 1 }">
 							<a class="page-link" href="#" onclick="alert('첫 페이지입니다.');">Prev</a>
@@ -102,15 +102,15 @@
 							<c:set var="style" value="" />
 						</c:if>
 						<c:if test="${(startNum+i) <=lastNum }">
-							<a style="${style}" class="page-link" href="?p=${startNum+i}&f=${param.f}&q=${param.q}">${startNum+i}</a>
+							<a style="${style}" class="page-link" href="?p=${startNum+i}&q=${param.q}">${startNum+i}</a>
 						</c:if>
 					</li>
 					</c:forEach>
 					<!-- 다음 페이지 -->
 					
-					<li class="page-item">
+					 <li class="page-item">
 					<c:if test="${startNum+5 <= lastNum }">
-						<a class="page-link" href="?p=${startNum+5}&f=${param.f}&q=${param.q}">Next</a>
+						<a class="page-link" href="?p=${startNum+5}}&q=${param.q}">Next</a>
 					</c:if>
 					<c:if test="${startNum+5 >lastNum }">
 						<a class="page-link" href="#" onclick="alert('마지막 페이지입니다.');">Next</a>

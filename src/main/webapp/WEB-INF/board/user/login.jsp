@@ -17,12 +17,12 @@
  <!-- Custom styles for this template -->
 <link href="${root}/css/user/signin.css" rel="stylesheet">
 </head>
-  <body class="text-center">
+  <body class="text-center"><!--  bg-dark  -->
 	<div>${ment}</div>
 	<main class="form-signin">
 		<form action="" method="post">
 			<img class="mb-4" src="/img/logo2.png" alt="" width="72" height="57">
-    		<h1 class="h3 mb-3 fw-normal">GEM방에 어서오쇼</h1>
+    		<h1 class="h3 mb-3 fw-normal text-white">GEM방에 어서오쇼</h1>
 			<div class="form-floating">
      	   		<input type="text" class="form-control" id="id" name="id" placeholder="ID" value="<c:out value='${id}'/>">
      			<label for="floatingInput">ID</label>
@@ -31,7 +31,7 @@
       			<input type="password" class="form-control" id="pass" name="pass" placeholder="Password">
       			<label for="floatingPassword">Password</label>
     		</div>
-    		<div class="checkbox mb-3">
+    		<div class="checkbox mb-3 text-black">
       			<label>
         			<input type="checkbox" value="Y" <c:if test='${id !=null && id!=""}'>checked</c:if>> Remember me
       			</label>

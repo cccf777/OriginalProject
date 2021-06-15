@@ -18,23 +18,23 @@
 <div class="container">
 	<main>
 	    <div class="py-5 text-center">
-      		<img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-      		<h2>SignUp form</h2>
-      		<p class="lead">Welcome to this Page.</p>
+      		<img class="d-block mx-auto mb-4" src="/img/logo2.png" alt="" width="72" height="57">
+      		<h2>회원 가입</h2>
+      		<p class="lead">Gem방의 회원이 되어주세요!</p>
     	</div>
 	    <div class="row g-5">
 	   	<div class="col-3"></div>
 	    <div class="col-6">
       		<div class="col-12">
-        		<h4 class="mb-3">Sign up to This Site</h4>
+        		<h4 class="mb-3">정보 기재란</h4>
         		<form id="joinform" name="joinform" action="" method="post" onsubmit="return createFrom(this)">
           			<div class="row g-3">
           			
           				<!--  ID  -->
           			    <div class="col-12">
-              				<label for="ID" class="form-label">ID</label>
+              				<label for="ID" class="form-label">아이디</label>
               				<div class="input-group has-validation">
-                			<span class="input-group-text">@</span>
+                			<!-- <span class="input-group-text"></span> -->
                 				<input type="text" class="form-control" name="id" id="id" placeholder="ID" required>
               					<button type="button" onclick="idCheck(joinform, '${root}')" >ID Check</button>
               					<div class="invalid-feedback">
@@ -44,22 +44,22 @@
             			
             			<!--  PASSWORD  -->
             			<div class="col-12">
-             		 		<label for="Password" class="form-label">Password</label>
-              				<input type="password" class="form-control" name="password" id="password" placeholder="password" required>
+             		 		<label for="Password" class="form-label">비밀번호</label>
+              				<input type="password" class="form-control" name="password" id="password" placeholder="비밀번호를 등록하세요" required>
               				<div class="invalid-feedback">
               				</div>
             			</div>
             			
 						<!--  PASSWORD CHECK  -->
             			<div class="col-12">
-              				<label for="PasswordCheck" class="form-label">Password Check <span class="text-muted"></span></label>
-              				<input type="password" class="form-control" id="passwordCheck" placeholder="Please again Password">
+              				<label for="PasswordCheck" class="form-label">비밀번호 확인<span class="text-muted"></span></label>
+              				<input type="password" class="form-control" id="passwordCheck" placeholder="비밀번호가 일치하는지 확인합니다">
            				</div>
            				
             			<!--  이름 입력  -->
             			<div class="col-12">
-              				<label for="Name" class="form-label">Name</label>
-              				<input type="text" class="form-control" name="name" id="name" placeholder="Please input your name" value="" required>
+              				<label for="Name" class="form-label">이름</label>
+              				<input type="text" class="form-control" name="name" id="name" placeholder="이름을 입력하세요" value="" required>
               				<div class="invalid-feedback">
               				</div>
             			</div>
@@ -73,7 +73,7 @@
             			</div>
           			</div>
           		<hr class="my-4"><!-- primary 파란색, secondary 회색 success 녹색 warning 노란색 info 하늘새 -->
-          <button class="w-100 btn btn-danger btn-lg" type="submit">Sign Up</button>
+          <button class="w-100 btn btn-danger btn-lg" type="submit">회원 가입</button>
         </form>
       </div>
     </div>
@@ -82,7 +82,7 @@
 	</main>
 	
 	<footer class="my-5 pt-5 text-muted text-center text-small">
-    	<p class="mb-1">&copy; 2021 Mr.Lee</p>
+    	<p class="mb-1">&copy; 2021 CHDB</p>
     	<ul class="list-inline">
       		<li class="list-inline-item"><a href="#">Privacy</a></li>
       		<li class="list-inline-item"><a href="#">Terms</a></li>

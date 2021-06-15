@@ -36,7 +36,7 @@
 		</tr>
 		<tr>
 			<th>유저등급</th>
-			<td><%=userRank %></td>
+			<td>${srank}</td>
 		</tr>
 	</table>
 	<div>

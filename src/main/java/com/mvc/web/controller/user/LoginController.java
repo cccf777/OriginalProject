@@ -1,6 +1,7 @@
 package com.mvc.web.controller.user;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,22 +32,39 @@ public class LoginController extends HttpServlet{
 		
 		User ur = (UserDAO.getInstance().LoginCheck(lg));
 		
+
+		PrintWriter out=resp.getWriter();
+		
 		int result = ur.getNumber();
 		System.out.println("result값:"+result);
 		switch(result) {
 		case -1: 
 			//login창으로 다시 보낸다.
 			
-			req.setAttribute("ment", "pw가 틀렸습니다.");
-			doGet(req,resp);
+			/*
+			 * req.setAttribute("ment", "pw가 틀렸습니다."); doGet(req,resp);
+			 */
+			out.println("<script>alert('비밀번호가 틀렸습니다.');");
+			 
+			out.flush();
+
+			out.println("history.back(); </script>");
 			break;
 			
 		case 0:
 			//login창으로 다시 보낸다.
 			
-			req.setAttribute("ment", "존재하지 않는 id입니다.");
-			doGet(req,resp);
+			/*
+			 * req.setAttribute("ment", "존재하지 않는 id입니다."); doGet(req,resp); break;
+			 */
+			out.println("<script>alert('존재하지 않는 id입니다.');");
+			 
+			out.flush();
+
+			out.println("history.back(); </script>");
+			//doGet(req,resp);
 			break;
+			
 		
 		case 1://로그인 성공
 			//login창으로 다시 보낸다.
